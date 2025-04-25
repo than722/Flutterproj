@@ -1,0 +1,24 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- The INTERNET permission is required for development. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:label="flutter_proj"
+        android:icon="@mipmap/ic_launcher">
+        
+        <!-- Add this meta-data for Firebase -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="default" />
+
+        <!-- Add this meta-data for Google Services -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="YOUR_APP_ID" />
+
+        <!-- Required for Google Sign-In -->
+        <meta-data
+            android:name="com.google.android.gms.auth.api.signin.default_web_client_id"
+            android:value="YOUR_WEB_CLIENT_ID" />
+    </application>
+</manifest>
