@@ -1,0 +1,134 @@
+{
+  "project_info": {
+    "project_number": "815908073019",
+    "project_id": "cse1-teaml1",
+    "storage_bucket": "cse1-teaml1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815908073019:android:c71868a35c794f5a17b61e",
+        "android_client_info": {
+          "package_name": "com.addu.univents"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "815908073019-tvv44vantl15s9v7jscfhf9h8ffdhqb9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.addu.univents",
+            "certificate_hash": "506d32129e59a78f3d2e7c05af9204c25919f4dd"
+          }
+        },
+        {
+          "client_id": "815908073019-agm9fs8icdjqqii44coqpck1k9a66nol.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0wAefUEUxESxVlLwjhXhFcBxQUGQmfS8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "815908073019-agm9fs8icdjqqii44coqpck1k9a66nol.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "815908073019-bmnhgb056qosgb4q6co7ccnk9gh0qd80.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.univentsApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815908073019:android:b8d9c5faa2fa103417b61e",
+        "android_client_info": {
+          "package_name": "com.example.univents_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "815908073019-agm9fs8icdjqqii44coqpck1k9a66nol.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0wAefUEUxESxVlLwjhXhFcBxQUGQmfS8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "815908073019-agm9fs8icdjqqii44coqpck1k9a66nol.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "815908073019-bmnhgb056qosgb4q6co7ccnk9gh0qd80.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.univentsApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815908073019:android:e635102df1bd882d17b61e",
+        "android_client_info": {
+          "package_name": "com.example.univents_mobile_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "815908073019-fsgg080nrc8e8tatfdr3begg143jpag8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.univents_mobile_app",
+            "certificate_hash": "506d32129e59a78f3d2e7c05af9204c25919f4dd"
+          }
+        },
+        {
+          "client_id": "815908073019-agm9fs8icdjqqii44coqpck1k9a66nol.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0wAefUEUxESxVlLwjhXhFcBxQUGQmfS8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "815908073019-agm9fs8icdjqqii44coqpck1k9a66nol.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "815908073019-bmnhgb056qosgb4q6co7ccnk9gh0qd80.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.univentsApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
