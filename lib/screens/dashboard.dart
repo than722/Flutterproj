@@ -7,8 +7,34 @@ import 'login_screen.dart';
 import 'event_details.dart';
 import 'profile_screen.dart'; // ADD THIS LINE to import the ProfileScreen
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
+
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+  List<QueryDocumentSnapshot> _filteredEvents = [];
+
+  void _filterEvents(List<QueryDocumentSnapshot> events) {
+    setState(() {
+      _filteredEvents = events.where((event) {
+        final title = event['title']?.toString().toLowerCase() ?? '';
+        final description = event['description']?.toString().toLowerCase() ?? '';
+        final query = _searchQuery.toLowerCase();
+        return title.contains(query) || description.contains(query);
+      }).toList();
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   Future<void> _logout(BuildContext context) async {
     final googleSignIn = GoogleSignIn();
@@ -36,10 +62,7 @@ class Dashboard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Image.asset(
-                        'assets/AdDU_logo.png',
-                        width: 40,
-                      ),
+                      Image.asset('assets/AdDU_logo.png', width: 40),
                       const SizedBox(width: 10),
                       const Text(
                         'ATENEO DE DAVAO UNIVERSITY',
@@ -59,23 +82,16 @@ class Dashboard extends StatelessWidget {
                             PageRouteBuilder(
                               pageBuilder: (context, animation, secondaryAnimation) => const ProfileScreen(),
                               transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                const begin = Offset(1.0, 0.0); // ➡️ Start off-screen right
-                                const end = Offset.zero; // 📍 End at center
+                                const begin = Offset(1.0, 0.0);
+                                const end = Offset.zero;
                                 const curve = Curves.ease;
-
                                 final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-                                return SlideTransition(
-                                  position: animation.drive(tween),
-                                  child: child,
-                                );
+                                return SlideTransition(position: animation.drive(tween), child: child);
                               },
                             ),
                           );
                         },
                       ),
-
-
                     ],
                   ),
                   const SizedBox(height: 10),
@@ -83,6 +99,7 @@ class Dashboard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: TextField(
+                          controller: _searchController,
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
@@ -92,8 +109,12 @@ class Dashboard extends StatelessWidget {
                               borderRadius: BorderRadius.circular(30),
                               borderSide: BorderSide.none,
                             ),
-                            contentPadding: const EdgeInsets.symmetric(vertical: 0),
                           ),
+                          onChanged: (value) {
+                            setState(() {
+                              _searchQuery = value;
+                            });
+                          },
                         ),
                       ),
                     ],
@@ -125,7 +146,6 @@ class Dashboard extends StatelessWidget {
               ),
             ),
 
-            // Events
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance.collection('events').snapshots(),
@@ -139,16 +159,25 @@ class Dashboard extends StatelessWidget {
 
                   final events = snapshot.data!.docs;
 
+                  // Filter the events based on the search query
+                  final filtered = _searchQuery.isEmpty
+                      ? events
+                      : events.where((event) {
+                          final title = event['title']?.toString().toLowerCase() ?? '';
+                          final description = event['description']?.toString().toLowerCase() ?? '';
+                          final query = _searchQuery.toLowerCase();
+                          return title.contains(query) || description.contains(query);
+                        }).toList();
+
                   return ListView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: events.length,
+                    itemCount: filtered.length,
                     itemBuilder: (context, index) {
-                      final event = events[index];
+                      final event = filtered[index];
                       final title = event['title'] ?? 'No Title';
                       final banner = event['banner'] ?? '';
                       final description = event['description'] ?? '';
 
-                      // Safe parsing of datetimestart (can be Timestamp or String)
                       dynamic datetimestartData = event['datetimestart'];
                       DateTime? dateTime;
 
@@ -194,10 +223,7 @@ class Dashboard extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
                                   gradient: LinearGradient(
-                                    colors: [
-                                      Colors.transparent,
-                                      Colors.black.withOpacity(0.8),
-                                    ],
+                                    colors: [Colors.transparent, Colors.black.withOpacity(0.8)],
                                     begin: Alignment.topCenter,
                                     end: Alignment.bottomCenter,
                                   ),
@@ -299,3 +325,4 @@ class Dashboard extends StatelessWidget {
     );
   }
 }
+

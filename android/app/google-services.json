@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "815908073019-dte3f5eun2oi4tt3a874c8nqj6vt4fgl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.addu.univents",
+            "certificate_hash": "9698df8ab36e6532baeef8f573ccfb1569ef0714"
+          }
+        },
+        {
           "client_id": "815908073019-tvv44vantl15s9v7jscfhf9h8ffdhqb9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -93,6 +101,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "815908073019-2a5n9kevvrahms4nhkkivg8hf1ha91qd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.univents_mobile_app",
+            "certificate_hash": "9698df8ab36e6532baeef8f573ccfb1569ef0714"
+          }
+        },
         {
           "client_id": "815908073019-fsgg080nrc8e8tatfdr3begg143jpag8.apps.googleusercontent.com",
           "client_type": 1,
