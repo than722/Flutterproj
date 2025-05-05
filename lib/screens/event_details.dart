@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 class EventDetails extends StatefulWidget {
   final QueryDocumentSnapshot eventData;
@@ -211,11 +213,39 @@ class _EventDetailsState extends State<EventDetails> {
                   padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                 ),
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Registered successfully!')),
-                  );
+                onPressed: () async {
+                  final user = FirebaseAuth.instance.currentUser;
+
+                  if (user == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('You must be logged in to register.')),
+                    );
+                    return;
+                  }
+
+                  final attendeeData = {
+                    'accountid': user.uid, // UID from Firebase Auth
+                    'datetimestamp': Timestamp.now(),
+                    'status': 'registered',
+                    'uid': '', // Leave blank if unused, or use user.uid again if needed
+                  };
+
+                  try {
+                    await FirebaseFirestore.instance
+                        .collection('attendees')
+                        .doc(user.uid) // Document ID is also the UID
+                        .set(attendeeData);
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Registered successfully!')),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Registration failed: $e')),
+                    );
+                  }
                 },
+
                 child: const Text('Register Now', style: TextStyle(color: Colors.white)),
               ),
             ),

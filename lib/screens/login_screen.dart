@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dashboard.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -42,32 +43,59 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _signInWithGoogle() async {
-    setState(() => _isLoading = true);
+  setState(() => _isLoading = true);
 
-    try {
-      // IMPORTANT: Sign out first to force showing account picker
-      await _googleSignIn.signOut();
+  try {
+    // Sign out first to ensure account picker shows up
+    await _googleSignIn.signOut();
 
-      final googleUser = await _googleSignIn.signIn(); // new picker
-      if (googleUser == null) {
-        setState(() => _isLoading = false);
-        return; // user cancelled
-      }
-      final googleAuth = await googleUser.authentication;
-
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      await FirebaseAuth.instance.signInWithCredential(credential);
-      _goToDashboard();
-    } on FirebaseAuthException catch (e) {
-      _showError(e.message);
-    } finally {
+    final googleUser = await _googleSignIn.signIn();
+    if (googleUser == null) {
       setState(() => _isLoading = false);
+      return; // User cancelled
     }
+
+    final googleAuth = await googleUser.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+    final user = userCredential.user;
+    if (user == null) throw FirebaseAuthException(code: 'NO_USER', message: 'User is null');
+
+    // Check if user document already exists
+    final docRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+    final docSnap = await docRef.get();
+
+    if (!docSnap.exists) {
+      // Extract name
+      final names = (user.displayName ?? '').split(' ');
+      final firstName = names.isNotEmpty ? names.first : '';
+      final lastName = names.length > 1 ? names.sublist(1).join(' ') : '';
+
+      // Add new user document
+      await docRef.set({
+        'uid': user.uid,
+        'email': user.email ?? '',
+        'firstname': firstName,
+        'lastname': lastName,
+        'role': 'student',
+        'status': 'active',
+      });
+    }
+
+    _goToDashboard();
+  } on FirebaseAuthException catch (e) {
+    _showError(e.message);
+  } catch (e) {
+    _showError(e.toString());
+  } finally {
+    setState(() => _isLoading = false);
   }
+}
+
 
   void _goToDashboard() {
     Navigator.pushReplacement(
